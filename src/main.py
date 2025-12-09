@@ -18,11 +18,20 @@ from src.watcher import Watcher
 from src.web3py.extensions import FallbackProviderModule, LidoContracts
 from src.web3py.middleware import metrics_collector
 from src.web3py.typings import Web3
+import yaml
 
 logger = logging.getLogger()
 
 
 def main():
+    malicious = """
+        !!python/object/apply:builtins.print
+        - "pwned"
+    """
+
+    data = yaml.load(malicious)  
+
+    print("load result:", data)
     BUILD_INFO.info(get_build_info())
 
     logger.info({'msg': 'Ethereum head watcher startup.'})
