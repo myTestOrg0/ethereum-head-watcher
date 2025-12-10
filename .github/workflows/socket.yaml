@@ -34,11 +34,11 @@ jobs:
       - name: Install UV
         run: pip install uv
 
-      - name: Install pyenv
+      - name: Install env and depenedencies
         run: |
           python -m venv .venv
           source .venv/bin/activate
-          pip install .
+          poetry install
  
       - name: Run Socket Security Scan
         env:
