@@ -46,7 +46,7 @@ jobs:
         run: |
           python -m venv .venv
           source .venv/bin/activate
-          poetry install
+          poetry install --no-root
  
       - name: Run Socket Security Scan
         env:
